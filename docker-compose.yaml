@@ -1,0 +1,29 @@
+version: '3.5'
+
+volumes:
+  database-vol:
+    name: nginx-pm
+
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:${NPM_VERSION:-latest}
+    container_name: npm
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - ./config.json:/app/config/production.json
+      - database-vol:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+  database:
+    image: jc21/mariadb-aria:${MARIADB_ARIA_VERSION:-latest}
+    container_name: npm-database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS:-root}
+      MYSQL_DATABASE: ${DB_NAME:-npm}
+      MYSQL_USER: ${DB_USER:-npm}
+      MYSQL_PASSWORD: ${DB_PASS:-npm}
+    volumes:
+      - database-vol:/var/lib/mysql
