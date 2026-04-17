@@ -1,5 +1,17 @@
 name: nginx-proxy-manager
 
+networks:
+  nginx-pm-network:
+    name: nginx-pm-network
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: ${NETWORK_MTU:-1500}
+  nginx-pm-router:
+    name: nginx-pm-router
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: ${NETWORK_MTU:-1500}
+
 volumes:
   npm-data:
     name: nginx-proxy-manager-data
@@ -16,3 +28,6 @@ services:
     volumes:
       - npm-data:/data
       - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - nginx-pm-network
+      - nginx-pm-router
