@@ -5,15 +5,15 @@ volumes:
 services:
   npm:
     environment:
-      DB_POSTGRES_HOST: database
-      DB_POSTGRES_PORT: 5432
+      DB_POSTGRES_HOST: ${DB_HOST:-database}
+      DB_POSTGRES_PORT: ${DB_PORT:-5432}
       DB_POSTGRES_USER: ${DB_USER:-npm}
       DB_POSTGRES_NAME: ${DB_NAME:-npm}
       DB_POSTGRES_PASSWORD: ${DB_PASS:-npm}
-    depends_on:
-      - database
 
   database:
+    profiles:
+      - local-db
     image: postgres:${POSTGRES_VERSION:-17-alpine}
     container_name: nginx-proxy-manager-database
     restart: unless-stopped
