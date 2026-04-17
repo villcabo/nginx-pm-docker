@@ -5,7 +5,7 @@ Docker Compose setup for [Nginx Proxy Manager](https://nginxproxymanager.com/).
 ## Quick start
 
 ```bash
-git clone git@github.com:villcabo/nginx-pm-docker.git
+git clone https://github.com/villcabo/nginx-pm-docker.git
 cd nginx-pm-docker
 cp .env.example .env
 docker compose up -d
