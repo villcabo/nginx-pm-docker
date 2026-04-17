@@ -1,0 +1,25 @@
+volumes:
+  npm-database:
+    name: nginx-proxy-manager-database
+
+services:
+  npm:
+    environment:
+      DB_POSTGRES_HOST: database
+      DB_POSTGRES_PORT: 5432
+      DB_POSTGRES_USER: ${DB_USER:-npm}
+      DB_POSTGRES_NAME: ${DB_NAME:-npm}
+      DB_POSTGRES_PASSWORD: ${DB_PASS:-npm}
+    depends_on:
+      - database
+
+  database:
+    image: postgres:${POSTGRES_VERSION:-17-alpine}
+    container_name: nginx-proxy-manager-database
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-npm}
+      POSTGRES_DB: ${DB_NAME:-npm}
+      POSTGRES_PASSWORD: ${DB_PASS:-npm}
+    volumes:
+      - npm-database:/var/lib/postgresql/data
